@@ -6,20 +6,18 @@ module ComfortableMexicanSofa::ActsAsTree
   
   module ClassMethods
     def cms_acts_as_tree(options = {})
-      # TODO research dependent and touch configuration options
       configuration = {
         :foreign_key    => 'parent_id', 
         :order          => nil, 
         :counter_cache  => nil,
         :dependent      => :destroy,
-        :touch          => false }
+        :touch          => false
+      }
       configuration.update(options) if options.is_a?(Hash)
       
       belongs_to :parent,
         :class_name     => name, 
-        :foreign_key    => configuration[:foreign_key],
-        :counter_cache  => configuration[:counter_cache],
-        :touch          => configuration[:touch]
+        :foreign_key    => configuration[:foreign_key]
         
       has_many :children,
         :class_name     => name, 
