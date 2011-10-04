@@ -1,8 +1,13 @@
-class Cms::Page < ActiveRecord::Base
-  
+class Cms::Page
+  include Mongoid::Document
+  include ComfortableMexicanSofa::ActsAsTree
+  include ComfortableMexicanSofa::IsCategorized
+  include ComfortableMexicanSofa::IsMirrored
+  include ComfortableMexicanSofa::HasRevisions
+
   ComfortableMexicanSofa.establish_connection(self)
     
-  set_table_name :cms_pages
+  store_in :cms_pages
   
   cms_acts_as_tree :counter_cache => :children_count
   cms_is_categorized
@@ -44,7 +49,7 @@ class Cms::Page < ActiveRecord::Base
   validate :validate_target_page
   
   # -- Scopes ---------------------------------------------------------------
-  default_scope order(:position)
+  default_scope order_by(:position)
   scope :published, where(:is_published => true)
   
   # -- Class Methods --------------------------------------------------------

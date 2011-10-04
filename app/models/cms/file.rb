@@ -1,10 +1,13 @@
-class Cms::File < ActiveRecord::Base
-  
+class Cms::File
   IMAGE_MIMETYPES = %w(gif jpeg pjpeg png svg+xml tiff).collect{|subtype| "image/#{subtype}"}
-  
+
+  include Mongoid::Document
+  include ComfortableMexicanSofa::IsCategorized
+  include Mongoid::Paperclip
+
   ComfortableMexicanSofa.establish_connection(self)
     
-  set_table_name :cms_files
+  store_in :cms_files
   
   cms_is_categorized
   
@@ -35,6 +38,7 @@ class Cms::File < ActiveRecord::Base
   # -- Scopes ---------------------------------------------------------------
   scope :images,      where(:file_content_type => IMAGE_MIMETYPES)
   scope :not_images,  where('file_content_type NOT IN (?)', IMAGE_MIMETYPES)
+  default_scope order_by(:position)
   
 protected
   

@@ -1,8 +1,9 @@
-class Cms::Block < ActiveRecord::Base
-  
+class Cms::Block
+  include Mongoid::Document
+
   ComfortableMexicanSofa.establish_connection(self)
   
-  set_table_name :cms_blocks
+  store_in :cms_blocks
   
   # -- Relationships --------------------------------------------------------
   belongs_to :page

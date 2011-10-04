@@ -1,8 +1,9 @@
-class Cms::Category < ActiveRecord::Base
+class Cms::Category
+  include Mongoid::Document
   
   ComfortableMexicanSofa.establish_connection(self)
   
-  set_table_name :cms_categories
+  store_in :cms_categories
   
   # -- Relationships --------------------------------------------------------
   has_many :categorizations,
@@ -16,7 +17,7 @@ class Cms::Category < ActiveRecord::Base
     :presence   => true
     
   # -- Scopes ---------------------------------------------------------------
-  default_scope order(:label)
+  default_scope order_by(:label)
   scope :of_type, lambda { |type|
     where(:categorized_type => type)
   }

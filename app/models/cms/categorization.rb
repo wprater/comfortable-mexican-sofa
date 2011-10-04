@@ -1,8 +1,9 @@
-class Cms::Categorization < ActiveRecord::Base
-  
+class Cms::Categorization
+  include Mongoid::Document
+
   ComfortableMexicanSofa.establish_connection(self)
   
-  set_table_name :cms_categorizations
+  store_in :cms_categorizations
   
   # -- Relationships --------------------------------------------------------
   belongs_to :category

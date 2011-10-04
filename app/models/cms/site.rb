@@ -1,8 +1,9 @@
-class Cms::Site < ActiveRecord::Base
+class Cms::Site
+  include Mongoid::Document
   
   ComfortableMexicanSofa.establish_connection(self)
   
-  set_table_name :cms_sites
+  store_in :cms_sites
   
   # -- Relationships --------------------------------------------------------
   has_many :layouts,  :dependent => :destroy

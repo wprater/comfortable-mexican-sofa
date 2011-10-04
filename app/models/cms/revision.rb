@@ -1,15 +1,17 @@
-class Cms::Revision < ActiveRecord::Base
-  
+class Cms::Revision
+  include Mongoid::Document
+  # include Mongoid::Serialization
+
   ComfortableMexicanSofa.establish_connection(self)
   
-  set_table_name :cms_revisions
+  store_in :cms_revisions
   
-  serialize :data
+  field :data, type: Hash
   
   # -- Relationships --------------------------------------------------------
   belongs_to :record, :polymorphic => true
   
   # -- Scopes ---------------------------------------------------------------
-  default_scope order('created_at DESC')
+  default_scope order_by(:created_at, :desc)
   
 end

@@ -1,8 +1,12 @@
-class Cms::Layout < ActiveRecord::Base
-  
+class Cms::Layout
+  include Mongoid::Document
+  include ComfortableMexicanSofa::ActsAsTree
+  include ComfortableMexicanSofa::IsMirrored
+  include ComfortableMexicanSofa::HasRevisions
+
   ComfortableMexicanSofa.establish_connection(self)
     
-  set_table_name :cms_layouts
+  store_in :cms_layouts
   
   cms_acts_as_tree
   cms_is_mirrored
@@ -29,7 +33,7 @@ class Cms::Layout < ActiveRecord::Base
     :format     => { :with => /^\w[a-z0-9_-]*$/i }
     
   # -- Scopes ---------------------------------------------------------------
-  default_scope order(:position)
+  default_scope order_by(:position)
   
   # -- Class Methods --------------------------------------------------------
   # Tree-like structure for layouts

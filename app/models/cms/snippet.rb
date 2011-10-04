@@ -1,8 +1,12 @@
-class Cms::Snippet < ActiveRecord::Base
-  
+class Cms::Snippet
+  include Mongoid::Document
+  include ComfortableMexicanSofa::IsCategorized
+  include ComfortableMexicanSofa::IsMirrored
+  include ComfortableMexicanSofa::HasRevisions
+
   ComfortableMexicanSofa.establish_connection(self)
   
-  set_table_name :cms_snippets
+  store_in :cms_snippets
   
   cms_is_categorized
   cms_is_mirrored
@@ -28,7 +32,7 @@ class Cms::Snippet < ActiveRecord::Base
     :format     => { :with => /^\w[a-z0-9_-]*$/i }
     
   # -- Scopes ---------------------------------------------------------------
-  default_scope order(:position)
+  default_scope order_by(:position)
   
 protected
   
