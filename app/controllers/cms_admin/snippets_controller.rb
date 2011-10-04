@@ -20,7 +20,7 @@ class CmsAdmin::SnippetsController < CmsAdmin::BaseController
     @snippet.save!
     flash[:notice] = I18n.t('cms.snippets.created')
     redirect_to :action => :edit, :id => @snippet
-  rescue ActiveRecord::RecordInvalid
+  rescue Mongoid::Errors::Validations
     flash.now[:error] = I18n.t('cms.snippets.creation_failure')
     render :action => :new
   end
@@ -29,7 +29,7 @@ class CmsAdmin::SnippetsController < CmsAdmin::BaseController
     @snippet.update_attributes!(params[:snippet])
     flash[:notice] = I18n.t('cms.snippets.updated')
     redirect_to :action => :edit, :id => @snippet
-  rescue ActiveRecord::RecordInvalid
+  rescue Mongoid::Errors::Validations
     flash.now[:error] = I18n.t('cms.snippets.update_failure')
     render :action => :edit
   end

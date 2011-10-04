@@ -23,7 +23,7 @@ class CmsAdmin::SitesController < CmsAdmin::BaseController
     @site.save!
     flash[:notice] = I18n.t('cms.sites.created')
     redirect_to cms_admin_site_layouts_path(@site)
-  rescue ActiveRecord::RecordInvalid
+  rescue Mongoid::Errors::Validations
     flash.now[:error] = I18n.t('cms.sites.creation_failure')
     render :action => :new
   end
@@ -32,7 +32,7 @@ class CmsAdmin::SitesController < CmsAdmin::BaseController
     @site.update_attributes!(params[:site])
     flash[:notice] = I18n.t('cms.sites.updated')
     redirect_to :action => :edit, :id => @site
-  rescue ActiveRecord::RecordInvalid
+  rescue Mongoid::Errors::Validations
     flash.now[:error] = I18n.t('cms.sites.update_failure')
     render :action => :edit
   end

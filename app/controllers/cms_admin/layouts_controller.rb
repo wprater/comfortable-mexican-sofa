@@ -20,7 +20,7 @@ class CmsAdmin::LayoutsController < CmsAdmin::BaseController
     @layout.save!
     flash[:notice] = I18n.t('cms.layouts.created')
     redirect_to :action => :edit, :id => @layout
-  rescue ActiveRecord::RecordInvalid
+  rescue Mongoid::Errors::Validations
     flash.now[:error] = I18n.t('cms.layouts.creation_failure')
     render :action => :new
   end
@@ -29,7 +29,7 @@ class CmsAdmin::LayoutsController < CmsAdmin::BaseController
     @layout.update_attributes!(params[:layout])
     flash[:notice] = I18n.t('cms.layouts.updated')
     redirect_to :action => :edit, :id => @layout
-  rescue ActiveRecord::RecordInvalid
+  rescue Mongoid::Errors::Validations
     flash.now[:error] = I18n.t('cms.layouts.update_failure')
     render :action => :edit
   end
@@ -53,7 +53,7 @@ protected
 
   def build_layout
     @layout = @site.layouts.new(params[:layout])
-    @layout.parent  ||= Cms::Layout.find_by_id(params[:parent_id])
+    @layout.parent  ||= Cms::Layout.find(params[:parent_id]) rescue nil
     @layout.content ||= '{{ cms:page:content:text }}'
   end
 

@@ -27,7 +27,7 @@ class CmsAdmin::PagesController < CmsAdmin::BaseController
     @page.save!
     flash[:notice] = I18n.t('cms.pages.created')
     redirect_to :action => :edit, :id => @page
-  rescue ActiveRecord::RecordInvalid
+  rescue Mongoid::Errors::Validations
     flash.now[:error] = I18n.t('cms.pages.creation_failure')
     render :action => :new
   end
@@ -36,7 +36,7 @@ class CmsAdmin::PagesController < CmsAdmin::BaseController
     @page.save!
     flash[:notice] = I18n.t('cms.pages.updated')
     redirect_to :action => :edit, :id => @page
-  rescue ActiveRecord::RecordInvalid
+  rescue Mongoid::Errors::Validations
     flash.now[:error] = I18n.t('cms.pages.update_failure')
     render :action => :edit
   end
@@ -81,7 +81,7 @@ protected
 
   def build_cms_page
     @page = @site.pages.new(params[:page])
-    @page.parent ||= (@site.pages.find_by_id(params[:parent_id]) || @site.pages.root)
+    @page.parent ||= (@site.pages.find(params[:parent_id]) rescue @site.pages.root)
     @page.layout ||= (@page.parent && @page.parent.layout || @site.layouts.first)
   end
 
