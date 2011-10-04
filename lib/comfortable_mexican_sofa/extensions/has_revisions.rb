@@ -60,5 +60,3 @@ module ComfortableMexicanSofa::HasRevisions
     end
   end
 end
-
-ActiveRecord::Base.send :include, ComfortableMexicanSofa::HasRevisions

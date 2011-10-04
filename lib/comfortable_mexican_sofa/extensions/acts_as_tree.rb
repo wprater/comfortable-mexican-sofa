@@ -98,5 +98,3 @@ module ComfortableMexicanSofa::ActsAsTree
     end
   end
 end
-
-ActiveRecord::Base.send :include, ComfortableMexicanSofa::ActsAsTree

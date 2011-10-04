@@ -77,5 +77,3 @@ module ComfortableMexicanSofa::IsMirrored
   end
   
 end
-
-ActiveRecord::Base.send :include, ComfortableMexicanSofa::IsMirrored
