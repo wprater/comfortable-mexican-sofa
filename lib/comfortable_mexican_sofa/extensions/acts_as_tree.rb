@@ -30,8 +30,8 @@ module ComfortableMexicanSofa::ActsAsTree
         include ComfortableMexicanSofa::ActsAsTree::InstanceMethods
         
         scope :roots,
-          :conditions => "#{configuration[:foreign_key]} IS NULL",
-          :order      => #{configuration[:order].nil? ? "nil" : %Q{"#{configuration[:order]}"}}
+          :where  => "#{configuration[:foreign_key]} IS NULL",
+          :order  => #{configuration[:order].nil? ? "nil" : %Q{"#{configuration[:order]}"}}
         
         def self.root
           roots.first
