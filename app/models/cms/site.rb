@@ -5,11 +5,17 @@ class Cms::Site
   
   store_in :cms_sites
   
+  field  :label,        type: String
+  field  :hostname,     type: String
+  field  :path,         type: String
+  field  :locale,       default: 'en',  required: true
+  field  :is_mirrored,  default: false, required: true
+  
   # -- Relationships --------------------------------------------------------
-  has_many :layouts,  :dependent => :destroy
-  has_many :pages,    :dependent => :destroy
-  has_many :snippets, :dependent => :destroy
-  has_many :files,    :dependent => :destroy
+  has_many :layouts,  class_name: 'Cms::Layout',  dependent: :destroy
+  has_many :pages,    class_name: 'Cms::Page',    dependent: :destroy
+  has_many :snippets, class_name: 'Cms::Snippet', dependent: :destroy
+  has_many :files,    class_name: 'Cms::File',    dependent: :destroy
   
   # -- Callbacks ------------------------------------------------------------
   before_validation :assign_label

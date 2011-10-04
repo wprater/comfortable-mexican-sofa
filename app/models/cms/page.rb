@@ -1,13 +1,23 @@
 class Cms::Page
   include Mongoid::Document
+  include Mongoid::Timestamps
   include ComfortableMexicanSofa::ActsAsTree
   include ComfortableMexicanSofa::IsCategorized
   include ComfortableMexicanSofa::IsMirrored
   include ComfortableMexicanSofa::HasRevisions
 
   ComfortableMexicanSofa.establish_connection(self)
-    
+
   store_in :cms_pages
+
+  field :label,           type: String
+  field :slug,            type: String
+  field :full_path,       type: String
+  field :content,         type: String
+  field :position,        type: Integer, default: 0,     :null => false
+  field :children_count,  type: Integer, default: 0,     :null => false
+  field :is_published,    type: Boolean, default: true,  :null => false
+  field :is_shared,       type: Boolean, default: false, :null => false
   
   cms_acts_as_tree :counter_cache => :children_count
   cms_is_categorized
@@ -18,11 +28,11 @@ class Cms::Page
                 :blocks_attributes_changed
   
   # -- Relationships --------------------------------------------------------
-  belongs_to :site
-  belongs_to :layout
-  belongs_to :target_page,
-    :class_name => 'Cms::Page'
+  belongs_to :site,         class_name: 'Cms::Site'
+  belongs_to :layout,       class_name: 'Cms::Layout'
+  belongs_to :target_page,  class_name: 'Cms::Page'
   has_many :blocks,
+    :class_name => 'Cms::Block',
     :dependent  => :destroy,
     :autosave   => true
   

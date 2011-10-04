@@ -1,5 +1,6 @@
 class Cms::Layout
   include Mongoid::Document
+  include Mongoid::Timestamps
   include ComfortableMexicanSofa::ActsAsTree
   include ComfortableMexicanSofa::IsMirrored
   include ComfortableMexicanSofa::HasRevisions
@@ -7,14 +8,23 @@ class Cms::Layout
   ComfortableMexicanSofa.establish_connection(self)
     
   store_in :cms_layouts
+
+  field  :app_layout, type: String
+  field  :label,      type: String
+  field  :slug,       type: String
+  field  :content,    type: String
+  field  :css,        type: String
+  field  :js,         type: String
+  field  :position,   type: Integer, default: 0,     :null => false
+  field  :is_shared,  type: Boolean, default: false, :null => false
   
   cms_acts_as_tree
   cms_is_mirrored
   cms_has_revisions_for :content, :css, :js
   
   # -- Relationships --------------------------------------------------------
-  belongs_to :site
-  has_many :pages, :dependent => :nullify
+  belongs_to :site, class_name: 'Cms::Site'
+  has_many :pages,  class_name: 'Cms::Page', dependent: :nullify
   
   # -- Callbacks ------------------------------------------------------------
   before_validation :assign_label
@@ -81,7 +91,7 @@ protected
   end
   
   def assign_position
-    max = self.site.layouts.where(:parent_id => self.parent_id).maximum(:position)
+    max = self.site.layouts.where(:parent_id => self.parent_id).max(:position)
     self.position = max ? max + 1 : 0
   end
   

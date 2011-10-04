@@ -1,13 +1,19 @@
 class Cms::Block
   include Mongoid::Document
+  include Mongoid::Timestamps
 
   ComfortableMexicanSofa.establish_connection(self)
   
   store_in :cms_blocks
+
+  field :page_id,  type: Integer
+  field :label,    type: String
+  field :content,  type: String
   
   # -- Relationships --------------------------------------------------------
-  belongs_to :page
+  belongs_to :page, class_name: 'Cms::Page'
   has_many :files,
+    :class_name => 'Cms::File',
     :autosave   => true,
     :dependent  => :destroy
   

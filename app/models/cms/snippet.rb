@@ -1,5 +1,6 @@
 class Cms::Snippet
   include Mongoid::Document
+  include Mongoid::Timestamps
   include ComfortableMexicanSofa::IsCategorized
   include ComfortableMexicanSofa::IsMirrored
   include ComfortableMexicanSofa::HasRevisions
@@ -7,13 +8,19 @@ class Cms::Snippet
   ComfortableMexicanSofa.establish_connection(self)
   
   store_in :cms_snippets
+
+  field :label,     type: String
+  field :slug,      type: String
+  field :content,   type: String
+  field :position,  type: Integer,  :default => 0,     :null => false
+  field :is_shared, type: Boolean,  :default => false, :null => false
   
   cms_is_categorized
   cms_is_mirrored
   cms_has_revisions_for :content
   
   # -- Relationships --------------------------------------------------------
-  belongs_to :site
+  belongs_to :site, class_name: 'Cms::Site'
   
   # -- Callbacks ------------------------------------------------------------
   before_validation :assign_label
