@@ -6,7 +6,6 @@ class Cms::Block
   
   store_in :cms_blocks
 
-  field :page_id,  type: Integer
   field :label,    type: String
   field :content,  type: String
   
