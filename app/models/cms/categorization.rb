@@ -10,7 +10,6 @@ class Cms::Categorization
   # -- Relationships --------------------------------------------------------
   belongs_to :category, class_name: 'Cms::Category'
   belongs_to :categorized,
-    :class_name => 'Cms::Layout',
     :polymorphic => true
     
   # -- Validations ----------------------------------------------------------
