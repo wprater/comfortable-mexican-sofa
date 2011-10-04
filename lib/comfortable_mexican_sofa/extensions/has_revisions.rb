@@ -13,6 +13,7 @@ module ComfortableMexicanSofa::HasRevisions
       attr_accessor :revision_data
       
       has_many :revisions,
+        :class_name => 'Cms::Revision',
         :as         => :record,
         :dependent  => :destroy
       
