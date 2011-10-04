@@ -10,7 +10,6 @@ class Cms::Category
   
   # -- Relationships --------------------------------------------------------
   has_many :categorizations,
-    :class_name => 'Cms::Categorization',
     :dependent => :destroy
     
   # -- Validations ----------------------------------------------------------
