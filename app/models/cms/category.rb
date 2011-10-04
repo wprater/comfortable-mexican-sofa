@@ -4,9 +4,13 @@ class Cms::Category
   ComfortableMexicanSofa.establish_connection(self)
   
   store_in :cms_categories
+
+  field :label,             type: String
+  field :categorized_type,  type: String
   
   # -- Relationships --------------------------------------------------------
   has_many :categorizations,
+    :class_name => 'Cms::Categorization',
     :dependent => :destroy
     
   # -- Validations ----------------------------------------------------------

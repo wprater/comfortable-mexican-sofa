@@ -4,10 +4,13 @@ class Cms::Categorization
   ComfortableMexicanSofa.establish_connection(self)
   
   store_in :cms_categorizations
+
+  field  :categorized_type, type: String
   
   # -- Relationships --------------------------------------------------------
-  belongs_to :category
+  belongs_to :category, class_name: 'Cms::Category'
   belongs_to :categorized,
+    :class_name => 'Cms::Layout',
     :polymorphic => true
     
   # -- Validations ----------------------------------------------------------
