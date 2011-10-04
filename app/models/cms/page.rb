@@ -64,7 +64,7 @@ class Cms::Page
   scope :find_by_full_path, ->(path) { where(full_path: path) }
   scope :find_by_full_path!, ->(path) { 
     criterea = where(full_path: path)
-    raise Mongoid::Errors::DocumentNotFound unless criterea.exists?
+    raise Mongoid::Errors::DocumentNotFound.new(self, path) unless criterea.exists?
     criterea
   }
   
