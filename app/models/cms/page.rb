@@ -157,7 +157,7 @@ protected
   
   def assign_position
     return unless self.parent
-    max = self.parent.children.maximum(:position)
+    max = self.parent.children.max(:position)
     self.position = max ? max + 1 : 0
   end
   

@@ -55,7 +55,7 @@ protected
   end
   
   def assign_position
-    max = self.site.snippets.maximum(:position)
+    max = self.site.snippets.max(:position)
     self.position = max ? max + 1 : 0
   end
   

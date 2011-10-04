@@ -2,12 +2,20 @@ class Cms::File
   IMAGE_MIMETYPES = %w(gif jpeg pjpeg png svg+xml tiff).collect{|subtype| "image/#{subtype}"}
 
   include Mongoid::Document
+  include Mongoid::Timestamps
   include ComfortableMexicanSofa::IsCategorized
   include Mongoid::Paperclip
 
   ComfortableMexicanSofa.establish_connection(self)
     
   store_in :cms_files
+  
+  field :label,           type: String
+  field :file_file_name,  type: String
+  field :file_content_type, type: String
+  field :file_file_size,  type: Integer
+  field :description,     type: String
+  field :position,        type: Integer,  :default => 0, :null => false
   
   cms_is_categorized
   
@@ -22,8 +30,8 @@ class Cms::File
   )
   
   # -- Relationships --------------------------------------------------------
-  belongs_to :site
-  belongs_to :block
+  belongs_to :site,   class_name: 'Cms::Site'
+  belongs_to :block,  class_name: 'Cms::Block'
   
   # -- Validations ----------------------------------------------------------
   validates :site_id, :presence => true
@@ -47,7 +55,7 @@ protected
   end
   
   def assign_position
-    max = Cms::File.maximum(:position)
+    max = Cms::File.max(:position)
     self.position = max ? max + 1 : 0
   end
   
