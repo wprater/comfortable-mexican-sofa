@@ -58,10 +58,10 @@ protected
   end
   
   def load_cms_page
-    @cms_page = @cms_site.pages.published.find_by_full_path!("/#{params[:cms_path]}")
+    @cms_page = @cms_site.pages.published.find_by_full_path!("/#{params[:cms_path]}").first
     return redirect_to(@cms_page.target_page.full_path) if @cms_page.target_page
     
-  rescue ActiveRecord::RecordNotFound
+  rescue Mongoid::Errors::DocumentNotFound
     if @cms_page = @cms_site.pages.published.find_by_full_path('/404')
       render_html(404)
     else
@@ -71,7 +71,7 @@ protected
 
   def load_cms_layout
     @cms_layout = @cms_site.layouts.find_by_slug!(params[:layout_slug])
-  rescue ActiveRecord::RecordNotFound
+  rescue Mongoid::Errors::DocumentNotFound
     render :nothing => true, :status => 404
   end
 

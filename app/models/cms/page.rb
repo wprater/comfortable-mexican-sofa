@@ -61,6 +61,12 @@ class Cms::Page
   # -- Scopes ---------------------------------------------------------------
   default_scope order_by(:position)
   scope :published, where(:is_published => true)
+  scope :find_by_full_path, ->(path) { where(full_path: path) }
+  scope :find_by_full_path!, ->(path) { 
+    criterea = where(full_path: path)
+    raise Mongoid::Errors::DocumentNotFound unless criterea.exists?
+    criterea
+  }
   
   # -- Class Methods --------------------------------------------------------
   # Tree-like structure for pages
