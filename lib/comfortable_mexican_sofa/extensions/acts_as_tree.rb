@@ -6,6 +6,7 @@ module ComfortableMexicanSofa::ActsAsTree
   
   module ClassMethods
     def cms_acts_as_tree(options = {})
+      # TODO research dependent and touch configuration options
       configuration = {
         :foreign_key    => 'parent_id', 
         :order          => nil, 
@@ -29,9 +30,9 @@ module ComfortableMexicanSofa::ActsAsTree
       class_eval <<-EOV
         include ComfortableMexicanSofa::ActsAsTree::InstanceMethods
         
-        scope :roots,
-          :where  => "#{configuration[:foreign_key]} IS NULL",
-          :order  => #{configuration[:order].nil? ? "nil" : %Q{"#{configuration[:order]}"}}
+        scope :roots, 
+          where(configuration[:foreign_key].to_sym.exists => false)
+          .order_by(#{configuration[:order].nil? ? "nil" : %Q{"#{configuration[:order]}"}})
         
         def self.root
           roots.first
