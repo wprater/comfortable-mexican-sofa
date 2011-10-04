@@ -1,6 +1,6 @@
 class Cms::Revision
   include Mongoid::Document
-  # include Mongoid::Serialization
+  include Mongoid::Timestamps
 
   ComfortableMexicanSofa.establish_connection(self)
   
