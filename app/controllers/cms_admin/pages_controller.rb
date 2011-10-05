@@ -57,7 +57,7 @@ class CmsAdmin::PagesController < CmsAdmin::BaseController
     s   = (session[:cms_page_tree] ||= [])
     id  = @page.id.to_s
     s.member?(id) ? s.delete(id) : s << id
-  rescue ActiveRecord::RecordNotFound
+  rescue Mongoid::Errors::DocumentNotFound
     # do nothing
   end
 
