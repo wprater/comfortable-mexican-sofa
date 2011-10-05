@@ -48,8 +48,8 @@ class CmsAdmin::PagesController < CmsAdmin::BaseController
   end
 
   def form_blocks
-    @page = @site.pages.find_by_id(params[:id]) || @site.pages.new
-    @page.layout = @site.layouts.find_by_id(params[:layout_id])
+    @page = @site.pages.find(params[:id]) rescue @site.pages.new
+    @page.layout = @site.layouts.find(params[:layout_id])
   end
 
   def toggle_branch
@@ -63,7 +63,7 @@ class CmsAdmin::PagesController < CmsAdmin::BaseController
 
   def reorder
     (params[:cms_page] || []).each_with_index do |id, index|
-      if (cms_page = Cms::Page.find_by_id(id))
+      if (cms_page = Cms::Page.find(id))
         cms_page.update_attribute(:position, index)
       end
     end
