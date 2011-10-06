@@ -45,7 +45,7 @@ class Cms::File
   
   # -- Scopes ---------------------------------------------------------------
   scope :images,      where(:file_content_type => IMAGE_MIMETYPES)
-  scope :not_images,  where('file_content_type NOT IN (?)', IMAGE_MIMETYPES)
+  scope :not_images,  not_in(file_content_type: IMAGE_MIMETYPES)
   default_scope order_by(:position)
   
 protected
