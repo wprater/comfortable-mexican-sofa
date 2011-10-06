@@ -44,7 +44,7 @@ class Cms::File
   after_destroy :reload_page_cache
   
   # -- Scopes ---------------------------------------------------------------
-  scope :images,      where(:file_content_type => IMAGE_MIMETYPES)
+  scope :images,      any_in(file_content_type: IMAGE_MIMETYPES)
   scope :not_images,  not_in(file_content_type: IMAGE_MIMETYPES)
   default_scope order_by(:position)
   
