@@ -22,7 +22,7 @@ class Cms::File
   attr_accessor :dimensions
   
   # -- AR Extensions --------------------------------------------------------
-  has_attached_file :file, ComfortableMexicanSofa.config.upload_file_options.merge(
+  has_mongoid_attached_file :file, ComfortableMexicanSofa.config.upload_file_options.merge(
     # dimensions accessor needs to be set before file assignment for this to work
     :styles => lambda { |f|
       f.instance.dimensions.blank?? { } : { :original => f.instance.dimensions }
