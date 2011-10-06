@@ -57,13 +57,13 @@ class Cms::Page
   validate :validate_target_page
   
   # -- Scopes ---------------------------------------------------------------
-  default_scope order_by(:position)
+  default_scope order_by(position: :asc)
   scope :published, where(:is_published => true)
-  scope :find_by_full_path, ->(path) { where(full_path: path) }
+  scope :find_by_full_path, ->(path) { where(full_path: path).order_by(:position) }
   scope :find_by_full_path!, ->(path) { 
     criterea = where(full_path: path)
     raise Mongoid::Errors::DocumentNotFound.new(self, path) unless criterea.exists?
-    criterea
+    criterea.order_by(:position)
   }
   
   # -- Class Methods --------------------------------------------------------
