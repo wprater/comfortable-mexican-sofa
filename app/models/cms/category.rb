@@ -9,8 +9,9 @@ class Cms::Category
   field :categorized_type,  type: String
   
   # -- Relationships --------------------------------------------------------
-  has_many :categorizations,
-    :dependent => :destroy
+  # has_many :categorizations,
+  #   :class_name => 'Cms::Categorization',
+  #   :dependent => :destroy
     
   # -- Validations ----------------------------------------------------------
   validates :label,

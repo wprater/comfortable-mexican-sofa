@@ -9,7 +9,7 @@ class CmsAdmin::PagesController < CmsAdmin::BaseController
   def index
     return redirect_to :action => :new if @site.pages.count == 0
     if params[:category].present?
-      @pages = @site.pages.includes(:categories).for_category(params[:category]).all(:order => 'label')
+      @pages = @site.pages.for_category(params[:category]).all(:order => 'label')
     else
       @pages = [@site.pages.root].compact
     end
@@ -93,7 +93,7 @@ protected
     @page = @site.pages.find(params[:id])
     @page.attributes = params[:page]
     @page.layout ||= (@page.parent && @page.parent.layout || @site.layouts.first)
-  rescue ActiveRecord::RecordNotFound
+  rescue Mongoid::Errors::DocumentNotFound
     flash[:error] = I18n.t('cms.pages.not_found')
     redirect_to :action => :index
   end

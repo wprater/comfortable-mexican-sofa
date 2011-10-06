@@ -8,21 +8,20 @@ module ComfortableMexicanSofa::IsCategorized
     def cms_is_categorized
       include ComfortableMexicanSofa::IsCategorized::InstanceMethods
       
-      has_many :categorizations,
-        :as         => :categorized,
-        :class_name => 'Cms::Categorization',
-        :dependent  => :destroy
-      has_many :categories,
-        :through    => :categorizations,
-        :class_name => 'Cms::Category'
+      has_and_belongs_to_many :categories,
+        inverse_of: nil,
+        class_name: 'Cms::Category'
         
-      attr_accessor :category_ids
-      
-      after_save :sync_categories
-      
+      attr_accessor :tmp_category_ids
+
+      before_save :sync_categories
+
       scope :for_category, lambda { |*categories|
         if (categories = [categories].flatten.compact).present?
-          select("DISTINCT #{table_name}.*").joins(:categorizations => :category).where('cms_categories.label' => categories)
+          ids = Cms::Category.where(:label.in => categories, :categorized_type => name).map(&:id)
+          where(:category_ids.in => ids)
+        else
+          all
         end
       }
     end
@@ -30,14 +29,16 @@ module ComfortableMexicanSofa::IsCategorized
   
   module InstanceMethods
     def sync_categories
-      (self.category_ids || {}).each do |category_id, flag|
+      category_bits = self.tmp_category_ids
+      (category_bits || {}).each do |category_id, flag|
         case flag.to_i
         when 1
-          if category = Cms::Category.find_by_id(category_id)
-            category.categorizations.create(:categorized => self)
+          if category = Cms::Category.find(category_id)
+            self.categories << category unless self.categories.include?(category)
           end
         when 0
-          self.categorizations.where(:category_id => category_id).destroy_all
+          idx = self.category_ids.index(BSON::ObjectId.from_string(category_id))
+          self.category_ids.delete_at(idx) unless idx.nil?
         end
       end
     end

@@ -26,7 +26,7 @@ protected
   
   def load_category
     @category = Cms::Category.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
+  rescue Mongoid::Errors::DocumentNotFound
     render :nothing => true
   end
   
