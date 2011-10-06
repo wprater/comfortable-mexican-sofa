@@ -86,7 +86,7 @@ protected
   
   def load_file
     @file = @site.files.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
+  rescue Mongoid::Errors::DocumentNotFound
     flash[:error] = I18n.t('cms.files.not_found')
     redirect_to :action => :index
   end

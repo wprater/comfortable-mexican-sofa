@@ -6,7 +6,6 @@ class CmsAdmin::SnippetsController < CmsAdmin::BaseController
   def index
     return redirect_to :action => :new if @site.snippets.count == 0
     @snippets = @site.snippets.for_category(params[:category])
-    # @snippets = @site.snippets.includes(:categories).for_category(params[:category])
   end
 
   def new
@@ -58,7 +57,7 @@ protected
 
   def load_snippet
     @snippet = @site.snippets.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
+  rescue Mongoid::Errors::DocumentNotFound
     flash[:error] = I18n.t('cms.snippets.not_found')
     redirect_to :action => :index
   end

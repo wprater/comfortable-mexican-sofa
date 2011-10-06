@@ -59,7 +59,7 @@ protected
 
   def load_layout
     @layout = @site.layouts.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
+  rescue Mongoid::Errors::DocumentNotFound
     flash[:error] = I18n.t('cms.layouts.not_found')
     redirect_to :action => :index
   end
