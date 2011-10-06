@@ -1,6 +1,5 @@
 class Cms::Block
   include Mongoid::Document
-  include Mongoid::Timestamps
 
   ComfortableMexicanSofa.establish_connection(self)
   
@@ -10,7 +9,7 @@ class Cms::Block
   field :content,  type: String
   
   # -- Relationships --------------------------------------------------------
-  belongs_to :page, class_name: 'Cms::Page'
+  embedded_in :page, class_name: 'Cms::Page'
   has_many :files,
     :class_name => 'Cms::File',
     :autosave   => true,
