@@ -15,6 +15,7 @@ module ComfortableMexicanSofa::HasRevisions
       has_many :revisions,
         :class_name => 'Cms::Revision',
         :as         => :record,
+        # TODO change option to recursively delete
         :dependent  => :destroy
       
       before_save :prepare_revision
@@ -51,7 +52,7 @@ module ComfortableMexicanSofa::HasRevisions
       
       # blowing away old revisions
       ids = [0] + self.revisions.limit(ComfortableMexicanSofa.config.revisions_limit.to_i).collect(&:id)
-      self.revisions.where('id NOT IN (?)', ids).destroy_all
+      self.revisions.not_in(id: ids).destroy_all
     end
     
     # Assigning whatever is found in revision data and attemptint to save the object
