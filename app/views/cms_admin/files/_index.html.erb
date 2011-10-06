@@ -6,7 +6,7 @@
   <% end %>
   
   <div id='uploaded_files'>
-    <% if (images = Cms::File.images.order(:label)).present? %>
+    <% if (images = Cms::File.images.order_by(:label)).present? %>
       <div class='section images'>
         <h3>Images</h3>
         <% images.each do |file| %>
@@ -14,7 +14,7 @@
         <% end %>
       </div>
     <% end %>
-    <% if (images = Cms::File.not_images.order(:label)).present? %>
+    <% if (images = Cms::File.not_images.order_by(:label)).present? %>
       <div class='section other'>
         <h3>Files</h3>
         <% images.each do |file| %>
