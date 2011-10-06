@@ -29,7 +29,7 @@ module ComfortableMexicanSofa::ActsAsTree
         include ComfortableMexicanSofa::ActsAsTree::InstanceMethods
         
         scope :roots, 
-          where(configuration[:foreign_key].to_sym.exists => false)
+          where(configuration[:foreign_key].to_sym => nil)
           .order_by(#{configuration[:order].nil? ? "nil" : %Q{"#{configuration[:order]}"}})
         
         def self.root
